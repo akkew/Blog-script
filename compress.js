@@ -1,2 +1,128 @@
-/* jQuery Cycle Plugin */ !function(P){function F(e){P.fn.cycle.debug&&O(e)}function O(){window.console&&window.console.log&&window.console.log("[cycle] "+Array.prototype.join.call(arguments," "))}function B(e,t){if(!P.support.opacity&&t.cleartype&&e.style.filter)try{e.style.removeAttribute("filter")}catch(e){}}function C(e,n,t,i){if(t&&n.busy&&n.manualTrump&&(F("manualTrump in go(), stopping active transition"),P(e).stop(!0,!0),n.busy=!1),n.busy)F("transition active, ignoring new tx request");else{var r=n.$cont[0],c=e[n.currSlide],s=e[n.nextSlide];if(r.cycleStop==n.stopCount&&(0!==r.cycleTimeout||t))if(t||r.cyclePause||n.bounce||!(n.autostop&&--n.countdown<=0||n.nowrap&&!n.random&&n.nextSlide<n.currSlide)){var o,a=!1;if((t||!r.cyclePause)&&n.nextSlide!=n.currSlide){a=!0;var l=n.fx;c.cycleH=c.cycleH||P(c).height(),c.cycleW=c.cycleW||P(c).width(),s.cycleH=s.cycleH||P(s).height(),s.cycleW=s.cycleW||P(s).width(),n.multiFx&&((null==n.lastFx||++n.lastFx>=n.fxs.length)&&(n.lastFx=0),l=n.fxs[n.lastFx],n.currFx=l),n.oneTimeFx&&(l=n.oneTimeFx,n.oneTimeFx=null),P.fn.cycle.resetState(n,l),n.before.length&&P.each(n.before,function(e,t){r.cycleStop==n.stopCount&&t.apply(s,[c,s,n,i])});var u=function(){P.each(n.after,function(e,t){r.cycleStop==n.stopCount&&t.apply(s,[c,s,n,i])})};F("tx firing; currSlide: "+n.currSlide+"; nextSlide: "+n.nextSlide),n.busy=1,n.fxFn?n.fxFn(c,s,n,u,i,t&&n.fastOnEvent):P.isFunction(P.fn.cycle[n.fx])?P.fn.cycle[n.fx](c,s,n,u,i,t&&n.fastOnEvent):P.fn.cycle.custom(c,s,n,u,i,t&&n.fastOnEvent)}if(a||n.nextSlide==n.currSlide)if(n.lastSlide=n.currSlide,n.random)n.currSlide=n.nextSlide,++n.randomIndex==e.length&&(n.randomIndex=0),n.nextSlide=n.randomMap[n.randomIndex],n.nextSlide==n.currSlide&&(n.nextSlide=n.currSlide==n.slideCount-1?0:n.currSlide+1);else if(n.backwards)(o=n.nextSlide-1<0)&&n.bounce?(n.backwards=!n.backwards,n.nextSlide=1,n.currSlide=0):(n.nextSlide=o?e.length-1:n.nextSlide-1,n.currSlide=o?0:n.nextSlide+1);else(o=n.nextSlide+1==e.length)&&n.bounce?(n.backwards=!n.backwards,n.nextSlide=e.length-2,n.currSlide=e.length-1):(n.nextSlide=o?0:n.nextSlide+1,n.currSlide=o?e.length-1:n.nextSlide-1);a&&n.pager&&n.updateActivePagerLink(n.pager,n.currSlide,n.activePagerClass);var d=0;n.timeout&&!n.continuous?d=f(e[n.currSlide],e[n.nextSlide],n,i):n.continuous&&r.cyclePause&&(d=10),0<d&&(r.cycleTimeout=setTimeout(function(){C(e,n,0,!n.backwards)},d))}else n.end&&n.end(n)}}function f(e,t,n,i){if(n.timeoutFn){for(var r=n.timeoutFn.call(e,e,t,n,i);r-n.speed<250;)r+=n.speed;if(F("calculated timeout: "+r+"; speed: "+n.speed),!1!==r)return r}return n.timeout}function E(e,t){var n=t?1:-1,i=e.elements,r=e.$cont[0],c=r.cycleTimeout;if(c&&(clearTimeout(c),r.cycleTimeout=0),e.random&&n<0)e.randomIndex--,-2==--e.randomIndex?e.randomIndex=i.length-2:-1==e.randomIndex&&(e.randomIndex=i.length-1),e.nextSlide=e.randomMap[e.randomIndex];else if(e.random)e.nextSlide=e.randomMap[e.randomIndex];else if(e.nextSlide=e.currSlide+n,e.nextSlide<0){if(e.nowrap)return!1;e.nextSlide=i.length-1}else if(e.nextSlide>=i.length){if(e.nowrap)return!1;e.nextSlide=0}var s=e.onPrevNextEvent||e.prevNextClick;return P.isFunction(s)&&s(0<n,e.nextSlide,i[e.nextSlide]),C(i,e,1,t),!1}function H(e){function i(e){return(e=parseInt(e).toString(16)).length<2?"0"+e:e}F("applying clearType background-color hack"),e.each(function(){P(this).css("background-color",function(e){for(;e&&"html"!=e.nodeName.toLowerCase();e=e.parentNode){var t=P.css(e,"background-color");if(0<=t.indexOf("rgb")){var n=t.match(/\d+/g);return"#"+i(n[0])+i(n[1])+i(n[2])}if(t&&"transparent"!=t)return t}return"#ffffff"}(this))})}null==P.support&&(P.support={opacity:!P.browser.msie}),P.fn.cycle=function(s,o){var a={s:this.selector,c:this.context};return 0===this.length&&"stop"!=s?(!P.isReady&&a.s?(O("DOM not ready, queuing slideshow"),P(function(){P(a.s,a.c).cycle(s,o)})):O("terminating; zero elements found by selector"+(P.isReady?"":" (DOM not ready)")),this):this.each(function(){var e=function(e,t,n){null==e.cycleStop&&(e.cycleStop=0);null==t&&(t={});{if(t.constructor==String){switch(t){case"destroy":case"stop":var i=P(e).data("cycle.opts");return i&&(e.cycleStop++,e.cycleTimeout&&clearTimeout(e.cycleTimeout),e.cycleTimeout=0,P(e).removeData("cycle.opts"),"destroy"==t&&function(e){e.next&&P(e.next).unbind(e.prevNextEvent);e.prev&&P(e.prev).unbind(e.prevNextEvent);(e.pager||e.pagerAnchorBuilder)&&P.each(e.pagerAnchors||[],function(){this.unbind().remove()});e.pagerAnchors=null,e.destroy&&e.destroy(e)}(i)),!1;case"toggle":return e.cyclePause=1===e.cyclePause?0:1,c(e.cyclePause,n,e),!1;case"pause":return!(e.cyclePause=1);case"resume":return e.cyclePause=0,c(!1,n,e),!1;case"prev":case"next":var i=P(e).data("cycle.opts");return i?P.fn.cycle[t](i):O('options not found, "prev/next" ignored'),!1;default:t={fx:t}}return t}if(t.constructor==Number){var r=t;return(t=P(e).data("cycle.opts"))?r<0||r>=t.elements.length?O("invalid slide index: "+r):(t.nextSlide=r,e.cycleTimeout&&(clearTimeout(e.cycleTimeout),e.cycleTimeout=0),"string"==typeof n&&(t.oneTimeFx=n),C(t.elements,t,1,r>=t.currSlide)):O("options not found, can not advance slide"),!1}}return t;function c(e,t,n){if(!e&&!0===t){var i=P(n).data("cycle.opts");if(!i)return O("options not found, can not resume"),!1;n.cycleTimeout&&(clearTimeout(n.cycleTimeout),n.cycleTimeout=0),C(i.elements,i,1,!i.backwards)}}}(this,s,o);if(!1!==e){e.updateActivePagerLink=e.updateActivePagerLink||P.fn.cycle.updateActivePagerLink,this.cycleTimeout&&clearTimeout(this.cycleTimeout),this.cycleTimeout=this.cyclePause=0;var t=P(this),n=e.slideExpr?P(e.slideExpr,this):t.children(),i=n.get();if(i.length<2)O("terminating; too few slides: "+i.length);else{var r=function(e,t,n,c,s){var o=P.extend({},P.fn.cycle.defaults,c||{},P.metadata?e.metadata():P.meta?e.data():{});o.autostop&&(o.countdown=o.autostopCount||n.length);var i=e[0];e.data("cycle.opts",o),o.$cont=e,o.stopCount=i.cycleStop,o.elements=n,o.before=o.before?[o.before]:[],o.after=o.after?[o.after]:[],o.after.unshift(function(){o.busy=0}),!P.support.opacity&&o.cleartype&&o.after.push(function(){B(this,o)});o.continuous&&o.after.push(function(){C(n,o,0,!o.backwards)});r=o,r.original={before:[],after:[]},r.original.cssBefore=P.extend({},r.cssBefore),r.original.cssAfter=P.extend({},r.cssAfter),r.original.animIn=P.extend({},r.animIn),r.original.animOut=P.extend({},r.animOut),P.each(r.before,function(){r.original.before.push(this)}),P.each(r.after,function(){r.original.after.push(this)}),P.support.opacity||!o.cleartype||o.cleartypeNoBg||H(t);var r;"static"==e.css("position")&&e.css("position","relative");o.width&&e.width(o.width);o.height&&"auto"!=o.height&&e.height(o.height);o.startingSlide?o.startingSlide=parseInt(o.startingSlide):o.backwards&&(o.startingSlide=n.length-1);if(o.random){o.randomMap=[];for(var a=0;a<n.length;a++)o.randomMap.push(a);o.randomMap.sort(function(e,t){return Math.random()-.5}),o.randomIndex=1,o.startingSlide=o.randomMap[1]}else o.startingSlide>=n.length&&(o.startingSlide=0);o.currSlide=o.startingSlide||0;var l=o.startingSlide;t.css({position:"absolute",top:0,left:0}).hide().each(function(e){var t;t=o.backwards?l?e<=l?n.length+(e-l):l-e:n.length-e:l?l<=e?n.length-(e-l):l-e:n.length-e,P(this).css("z-index",t)}),P(n[l]).css("opacity",1).show(),B(n[l],o),o.fit&&o.width&&t.width(o.width);o.fit&&o.height&&"auto"!=o.height&&t.height(o.height);if(o.containerResize&&!e.innerHeight()){for(var u=0,d=0,f=0;f<n.length;f++){var h=P(n[f]),g=h[0],m=h.outerWidth(),y=h.outerHeight();m||(m=g.offsetWidth||g.width||h.attr("width")),y||(y=g.offsetHeight||g.height||h.attr("height")),u=u<m?m:u,d=d<y?y:d}0<u&&0<d&&e.css({width:u+"px",height:d+"px"})}o.pause&&e.hover(function(){this.cyclePause++},function(){this.cyclePause--});if(!1===function(e){var t,n,i=P.fn.cycle.transitions;if(0<e.fx.indexOf(",")){for(e.multiFx=!0,e.fxs=e.fx.replace(/\s*/g,"").split(","),t=0;t<e.fxs.length;t++){var r=e.fxs[t];(n=i[r])&&i.hasOwnProperty(r)&&P.isFunction(n)||(O("discarding unknown transition: ",r),e.fxs.splice(t,1),t--)}if(!e.fxs.length)return O("No valid transitions named; slideshow terminating."),!1}else if("all"==e.fx)for(p in e.multiFx=!0,e.fxs=[],i)n=i[p],i.hasOwnProperty(p)&&P.isFunction(n)&&e.fxs.push(p);if(e.multiFx&&e.randomizeEffects){var c=Math.floor(20*Math.random())+30;for(t=0;t<c;t++){var s=Math.floor(Math.random()*e.fxs.length);e.fxs.push(e.fxs.splice(s,1)[0])}F("randomized fx sequence: ",e.fxs)}return!0}(o))return!1;var x=!1;if(c.requeueAttempts=c.requeueAttempts||0,t.each(function(){var e=P(this);if(this.cycleH=o.fit&&o.height?o.height:e.height()||this.offsetHeight||this.height||e.attr("height")||0,this.cycleW=o.fit&&o.width?o.width:e.width()||this.offsetWidth||this.width||e.attr("width")||0,e.is("img")){var t=P.browser.msie&&28==this.cycleW&&30==this.cycleH&&!this.complete,n=P.browser.mozilla&&34==this.cycleW&&19==this.cycleH&&!this.complete,i=P.browser.opera&&(42==this.cycleW&&19==this.cycleH||37==this.cycleW&&17==this.cycleH)&&!this.complete,r=0==this.cycleH&&0==this.cycleW&&!this.complete;if(t||n||i||r){if(s.s&&o.requeueOnImageNotLoaded&&++c.requeueAttempts<100)return O(c.requeueAttempts," - img slide not loaded, requeuing slideshow: ",this.src,this.cycleW,this.cycleH),setTimeout(function(){P(s.s,s.c).cycle(c)},o.requeueTimeout),!(x=!0);O("could not determine size of image: "+this.src,this.cycleW,this.cycleH)}}return!0}),x)return!1;o.cssBefore=o.cssBefore||{},o.animIn=o.animIn||{},o.animOut=o.animOut||{},t.not(":eq("+l+")").css(o.cssBefore),o.cssFirst&&P(t[l]).css(o.cssFirst);if(o.timeout){o.timeout=parseInt(o.timeout),o.speed.constructor==String&&(o.speed=P.fx.speeds[o.speed]||parseInt(o.speed)),o.sync||(o.speed=o.speed/2);for(var v="shuffle"==o.fx?500:250;o.timeout-o.speed<v;)o.timeout+=o.speed}o.easing&&(o.easeIn=o.easeOut=o.easing);o.speedIn||(o.speedIn=o.speed);o.speedOut||(o.speedOut=o.speed);o.slideCount=n.length,o.currSlide=o.lastSlide=l,o.random?(++o.randomIndex==n.length&&(o.randomIndex=0),o.nextSlide=o.randomMap[o.randomIndex]):o.backwards?o.nextSlide=0==o.startingSlide?n.length-1:o.startingSlide-1:o.nextSlide=o.startingSlide>=n.length-1?0:o.startingSlide+1;if(!o.multiFx){var S=P.fn.cycle.transitions[o.fx];if(P.isFunction(S))S(e,t,o);else if("custom"!=o.fx&&!o.multiFx)return O("unknown transition: "+o.fx,"; slideshow terminating"),!1}var w=t[l];o.before.length&&o.before[0].apply(w,[w,w,o,!0]);1<o.after.length&&o.after[1].apply(w,[w,w,o,!0]);o.next&&P(o.next).bind(o.prevNextEvent,function(){return E(o,1)});o.prev&&P(o.prev).bind(o.prevNextEvent,function(){return E(o,0)});(o.pager||o.pagerAnchorBuilder)&&(b=n,A=P((T=o).pager),P.each(b,function(e,t){P.fn.cycle.createPagerAnchor(e,t,A,b,T)}),T.updateActivePagerLink(T.pager,T.startingSlide,T.activePagerClass));var b,T,A;return I=o,k=n,I.addSlide=function(e,t){var n=P(e),i=n[0];I.autostopCount||I.countdown++,k[t?"unshift":"push"](i),I.els&&I.els[t?"unshift":"push"](i),I.slideCount=k.length,n.css("position","absolute"),n[t?"prependTo":"appendTo"](I.$cont),t&&(I.currSlide++,I.nextSlide++),P.support.opacity||!I.cleartype||I.cleartypeNoBg||H(n),I.fit&&I.width&&n.width(I.width),I.fit&&I.height&&"auto"!=I.height&&n.height(I.height),i.cycleH=I.fit&&I.height?I.height:n.height(),i.cycleW=I.fit&&I.width?I.width:n.width(),n.css(I.cssBefore),(I.pager||I.pagerAnchorBuilder)&&P.fn.cycle.createPagerAnchor(k.length-1,i,P(I.pager),k,I),P.isFunction(I.onAddSlide)?I.onAddSlide(n):n.hide()},o;var I,k}(t,n,i,e,a);if(!1!==r){var c=r.continuous?10:f(i[r.currSlide],i[r.nextSlide],r,!r.backwards);c&&((c+=r.delay||0)<10&&(c=10),F("first timeout: "+c),this.cycleTimeout=setTimeout(function(){C(i,r,0,!e.backwards)},c))}}}})},P.fn.cycle.resetState=function(e,t){t=t||e.fx,e.before=[],e.after=[],e.cssBefore=P.extend({},e.original.cssBefore),e.cssAfter=P.extend({},e.original.cssAfter),e.animIn=P.extend({},e.original.animIn),e.animOut=P.extend({},e.original.animOut),e.fxFn=null,P.each(e.original.before,function(){e.before.push(this)}),P.each(e.original.after,function(){e.after.push(this)});var n=P.fn.cycle.transitions[t];P.isFunction(n)&&n(e.$cont,P(e.elements),e)},P.fn.cycle.updateActivePagerLink=function(e,t,n){P(e).each(function(){P(this).children().removeClass(n).eq(t).addClass(n)})},P.fn.cycle.next=function(e){E(e,1)},P.fn.cycle.prev=function(e){E(e,0)},P.fn.cycle.createPagerAnchor=function(r,e,t,c,s){var n;if(P.isFunction(s.pagerAnchorBuilder)?(n=s.pagerAnchorBuilder(r,e),F("pagerAnchorBuilder("+r+", el) returned: "+n)):n='<a href="#">'+(r+1)+"</a>",n){var i=P(n);if(0===i.parents("body").length){var o=[];1<t.length?(t.each(function(){var e=i.clone(!0);P(this).append(e),o.push(e[0])}),i=P(o)):i.appendTo(t)}s.pagerAnchors=s.pagerAnchors||[],s.pagerAnchors.push(i),i.bind(s.pagerEvent,function(e){e.preventDefault(),s.nextSlide=r;var t=s.$cont[0],n=t.cycleTimeout;n&&(clearTimeout(n),t.cycleTimeout=0);var i=s.onPagerEvent||s.pagerClick;P.isFunction(i)&&i(s.nextSlide,c[s.nextSlide]),C(c,s,1,s.currSlide<r)}),/^click/.test(s.pagerEvent)||s.allowPagerClickBubble||i.bind("click.cycle",function(){return!1}),s.pauseOnPagerHover&&i.hover(function(){s.$cont[0].cyclePause++},function(){s.$cont[0].cyclePause--})}},P.fn.cycle.hopsFromLast=function(e,t){var n=e.lastSlide,i=e.currSlide;return t?n<i?i-n:e.slideCount-n:i<n?n-i:n+e.slideCount-i},P.fn.cycle.commonReset=function(e,t,n,i,r,c){P(n.elements).not(e).hide(),n.cssBefore.opacity=1,n.cssBefore.display="block",n.slideResize&&!1!==i&&0<t.cycleW&&(n.cssBefore.width=t.cycleW),n.slideResize&&!1!==r&&0<t.cycleH&&(n.cssBefore.height=t.cycleH),n.cssAfter=n.cssAfter||{},n.cssAfter.display="none",P(e).css("zIndex",n.slideCount+(!0===c?1:0)),P(t).css("zIndex",n.slideCount+(!0===c?0:1))},P.fn.cycle.custom=function(e,t,n,i,r,c){var s=P(e),o=P(t),a=n.speedIn,l=n.speedOut,u=n.easeIn,d=n.easeOut;o.css(n.cssBefore),c&&(a=l="number"==typeof c?c:1,u=d=null);var f=function(){o.animate(n.animIn,a,u,i)};s.animate(n.animOut,l,d,function(){n.cssAfter&&s.css(n.cssAfter),n.sync||f()}),n.sync&&f()},P.fn.cycle.transitions={fade:function(e,t,n){t.not(":eq("+n.currSlide+")").css("opacity",0),n.before.push(function(e,t,n){P.fn.cycle.commonReset(e,t,n),n.cssBefore.opacity=0}),n.animIn={opacity:1},n.animOut={opacity:0},n.cssBefore={top:0,left:0}}},P.fn.cycle.ver=function(){return"2.94"},P.fn.cycle.defaults={fx:"fade",timeout:4e3,timeoutFn:null,continuous:0,speed:1e3,speedIn:null,speedOut:null,next:null,prev:null,onPrevNextEvent:null,prevNextEvent:"click.cycle",pager:null,onPagerEvent:null,pagerEvent:"click.cycle",allowPagerClickBubble:!1,pagerAnchorBuilder:null,before:null,after:null,end:null,easing:null,easeIn:null,easeOut:null,shuffle:null,animIn:null,animOut:null,cssBefore:null,cssAfter:null,fxFn:null,height:"auto",startingSlide:0,sync:1,random:0,fit:0,containerResize:1,slideResize:1,pause:0,pauseOnPagerHover:0,autostop:0,autostopCount:0,delay:0,slideExpr:null,cleartype:!P.support.opacity,cleartypeNoBg:!1,nowrap:0,fastOnEvent:0,randomizeEffects:1,rev:0,manualTrump:!0,requeueOnImageNotLoaded:!0,requeueTimeout:250,activePagerClass:"activeSlide",updateActivePagerLink:null,backwards:!1}}(jQuery);
-/* jquery.innerfade.js */ function removeFilter(e){e.style.removeAttribute&&e.style.removeAttribute("filter")}!function(s){s.fn.innerfade=function(e){return this.each(function(){s.innerfade(this,e)})},s.innerfade=function(e,n){var t={animationtype:"fade",speed:"normal",type:"sequence",timeout:2e3,containerheight:"auto",runningclass:"innerfade",children:null};if(n&&s.extend(t,n),null===t.children)var i=s(e).children();else i=s(e).children(t.children);if(1<i.length){s(e).css("position","relative").css("height",t.containerheight).addClass(t.runningclass);for(var r=0;r<i.length;r++)s(i[r]).css("z-index",String(i.length-r)).css("position","absolute").hide();if("sequence"==t.type)setTimeout(function(){s.innerfade.next(i,t,1,0)},t.timeout),s(i[0]).show();else if("random"==t.type){var a=Math.floor(Math.random()*i.length);setTimeout(function(){for(;o=Math.floor(Math.random()*i.length),a==o;);s.innerfade.next(i,t,o,a)},t.timeout),s(i[a]).show()}else if("random_start"==t.type){t.type="sequence";var o=Math.floor(Math.random()*i.length);setTimeout(function(){s.innerfade.next(i,t,(o+1)%i.length,o)},t.timeout),s(i[o]).show()}else alert("Innerfade-Type must either be 'sequence', 'random' or 'random_start'")}},s.innerfade.next=function(e,n,t,i){if("slide"==n.animationtype?(s(e[i]).slideUp(n.speed),s(e[t]).slideDown(n.speed)):"fade"==n.animationtype?(s(e[i]).fadeOut(n.speed),s(e[t]).fadeIn(n.speed,function(){removeFilter(s(this)[0])})):alert("Innerfade-animationtype must either be 'slide' or 'fade'"),"sequence"==n.type)t+1<e.length?i=(t+=1)-1:(t=0,i=e.length-1);else if("random"==n.type)for(i=t;t==i;)t=Math.floor(Math.random()*e.length);else alert("Innerfade-Type must either be 'sequence', 'random' or 'random_start'");setTimeout(function(){s.innerfade.next(e,n,t,i)},n.timeout)}}(jQuery);
+/* =========================================================
+
+// jquery.innerfade.js
+
+// Datum: 2008-02-14
+// Firma: Medienfreunde Hofmann & Baldes GbR
+// Author: Torsten Baldes
+// Mail: t.baldes@medienfreunde.com
+// Web: http://medienfreunde.com
+
+// based on the work of Matt Oakes http://portfolio.gizone.co.uk/applications/slideshow/
+// and Ralf S. Engelschall http://trainofthoughts.org/
+
+ *
+ *  <ul id="news"> 
+ *      <li>content 1</li>
+ *      <li>content 2</li>
+ *      <li>content 3</li>
+ *  </ul>
+ *  
+ *  $('#news').innerfade({ 
+ *	  animationtype: Type of animation 'fade' or 'slide' (Default: 'fade'), 
+ *	  speed: Fading-/Sliding-Speed in milliseconds or keywords (slow, normal or fast) (Default: 'normal'), 
+ *	  timeout: Time between the fades in milliseconds (Default: '2000'), 
+ *	  type: Type of slideshow: 'sequence', 'random' or 'random_start' (Default: 'sequence'), 
+ * 		containerheight: Height of the containing element in any css-height-value (Default: 'auto'),
+ *	  runningclass: CSS-Class which the container getâ€™s applied (Default: 'innerfade'),
+ *	  children: optional children selector (Default: null)
+ *  }); 
+ *
+
+// ========================================================= */
+
+
+(function($) {
+
+    $.fn.innerfade = function(options) {
+        return this.each(function() {   
+            $.innerfade(this, options);
+        });
+    };
+
+    $.innerfade = function(container, options) {
+        var settings = {
+        		'animationtype':    'fade',
+            'speed':            'normal',
+            'type':             'sequence',
+            'timeout':          2000,
+            'containerheight':  'auto',
+            'runningclass':     'innerfade',
+            'children':         null
+        };
+        if (options)
+            $.extend(settings, options);
+        if (settings.children === null)
+            var elements = $(container).children();
+        else
+            var elements = $(container).children(settings.children);
+        if (elements.length > 1) {
+            $(container).css('position', 'relative').css('height', settings.containerheight).addClass(settings.runningclass);
+            for (var i = 0; i < elements.length; i++) {
+                $(elements[i]).css('z-index', String(elements.length-i)).css('position', 'absolute').hide();
+            };
+            if (settings.type == "sequence") {
+                setTimeout(function() {
+                    $.innerfade.next(elements, settings, 1, 0);
+                }, settings.timeout);
+                $(elements[0]).show();
+            } else if (settings.type == "random") {
+            		var last = Math.floor ( Math.random () * ( elements.length ) );
+                setTimeout(function() {
+                    do { 
+												current = Math.floor ( Math.random ( ) * ( elements.length ) );
+										} while (last == current );             
+										$.innerfade.next(elements, settings, current, last);
+                }, settings.timeout);
+                $(elements[last]).show();
+						} else if ( settings.type == 'random_start' ) {
+								settings.type = 'sequence';
+								var current = Math.floor ( Math.random () * ( elements.length ) );
+								setTimeout(function(){
+									$.innerfade.next(elements, settings, (current + 1) %  elements.length, current);
+								}, settings.timeout);
+								$(elements[current]).show();
+						}	else {
+							alert('Innerfade-Type must either be \'sequence\', \'random\' or \'random_start\'');
+						}
+				}
+    };
+
+    $.innerfade.next = function(elements, settings, current, last) {
+        if (settings.animationtype == 'slide') {
+            $(elements[last]).slideUp(settings.speed);
+            $(elements[current]).slideDown(settings.speed);
+        } else if (settings.animationtype == 'fade') {
+            $(elements[last]).fadeOut(settings.speed);
+            $(elements[current]).fadeIn(settings.speed, function() {
+							removeFilter($(this)[0]);
+						});
+        } else
+            alert('Innerfade-animationtype must either be \'slide\' or \'fade\'');
+        if (settings.type == "sequence") {
+            if ((current + 1) < elements.length) {
+                current = current + 1;
+                last = current - 1;
+            } else {
+                current = 0;
+                last = elements.length - 1;
+            }
+        } else if (settings.type == "random") {
+            last = current;
+            while (current == last)
+                current = Math.floor(Math.random() * elements.length);
+        } else
+            alert('Innerfade-Type must either be \'sequence\', \'random\' or \'random_start\'');
+        setTimeout((function() {
+            $.innerfade.next(elements, settings, current, last);
+        }), settings.timeout);
+    };
+
+})(jQuery);
+
+// **** remove Opacity-Filter in ie ****
+function removeFilter(element) {
+	if(element.style.removeAttribute){
+		element.style.removeAttribute('filter');
+	}
+}
