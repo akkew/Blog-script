@@ -13,13 +13,15 @@ $(document).ready(lNext(mulai));
 
 function lNext(i) {
     k = i+1;
-    console.log("Image "+i+" is loaded");
     if(k<jumlah){
     imgke = '<img id="gimg'+i+'" src="'+ potongan +''+ i +'.jpg"  onload="lNext('+k+')" >';
     }else{
     imgke = '<img id="gimg'+i+'" src="'+ potongan +''+ i +'.jpg" >';
     };
     //return;
+    $('.ni').append('<p>'+i+'/'+jumlah+'</p>');
+    $('.ni').append(imgke);
+	return console.log("Image "+i+" is loaded");
 };
 
 
