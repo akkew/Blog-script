@@ -9,7 +9,7 @@ var jumlah = document.getElementsByClassName("for_select")[0].innerText.replace(
     //imgke = '<img id="gimg'+mulai+'" onload="lNext('+k+')" src="'+ potongan +''+ mulai +'.jpg">';
 
 
-$(document).ready(lNext(mulai));
+//$(document).ready(lNext(mulai));
 
 function lNext(i) {
     k = i+1;
