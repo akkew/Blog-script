@@ -14,9 +14,9 @@ var jumlah = document.getElementsByClassName("for_select")[0].innerText.replace(
 function lNext(i) {
     k = i+1;
     if(k<jumlah){
-    imgke = '<img id="gimg'+i+'" src="'+ potongan +''+ i +'.jpg"  onload="lNext('+k+')" >';
+    imgke = '<img id="gimg'+i+'" src="'+ potongan + i +'.jpg"  onload="lNext('+k+')" >';
     }else{
-    imgke = '<img id="gimg'+i+'" src="'+ potongan +''+ i +'.jpg" >';
+    imgke = '<img id="gimg'+i+'" src="'+ potongan + i +'.jpg" >';
     };
     //return;
     $('#img').append('<p>'+i+'/'+jumlah+'</p>');
