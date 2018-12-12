@@ -19,15 +19,8 @@ function lNext(i) {
     imgke = '<img id="gimg'+i+'" src="'+ potongan +''+ i +'.jpg" >';
     };
     //return;
-    $('.ni').append('<p>'+i+'/'+jumlah+'</p>');
-    $('.ni').append(imgke);
+    $('#img').append('<p>'+i+'/'+jumlah+'</p>');
+    $('#img').append(imgke);
 	return console.log("Image "+i+" is loaded");
 };
 
-
-if(imgke!="")
-{
-    var i = k-1;
-    $('.ni').append('<p>'+i+'/'+jumlah+'</p>');
-    $('.ni').append(imgke);
-};
